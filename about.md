@@ -33,6 +33,6 @@ players of all experience levels.
 
 - **Arrive & sign in.** Sign up to an event in our [Discord]({{ site.discord_url }})
   so we know to expect you.
-- **Draft.** We start on-time to respect the availability of our store hosts.
-- **Deckbuild.** Your friendly club admins will coordinate matches for you.
-- **Battle.** We try to keep to time to ensure everyone gets a chance to play their deck.
+- **Draft.** You'll get 3 packs of 15 cards; take one card and pass the rest of the pack on. Repeat until all the cards and packs are gone.
+- **Deckbuild.** Build a 40-card deck with the cards you picked plus Basic Lands. 
+- **Play.** Your hosts will allocate you to 3 best-of-3 matches. Report your wins/losses for each round to help us coordinate the tournament.
