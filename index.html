@@ -29,18 +29,22 @@ layout: default
     <ul class="menu">
       {% for s in site.data.sessions %}
       <li class="menu__item">
-        <a class="session" href="{{ s.venue.url }}" target="_blank" rel="noopener">
-          <span class="session__cursor" aria-hidden="true">&#9654;</span>
-          <span class="session__main">
+        {% assign signup = s.signup_url | default: site.discord_url %}
+        {% if signup == "" %}{% assign signup = site.discord_url %}{% endif %}
+        <div class="session">
+          <div class="session__main">
             <span class="session__day">{{ s.day }}</span>
             <span class="session__name">{{ s.name }}</span>
-          </span>
-          <span class="session__meta">
+          </div>
+          <div class="session__meta">
             <span class="session__time">{{ s.time }}</span>
-            <span class="session__venue">{{ s.venue.name }} <span class="ext">↗</span></span>
+            <a class="session__venue" href="{{ s.venue.url }}" target="_blank" rel="noopener">{{ s.venue.name }} <span class="ext">↗</span></a>
             {% if s.note and s.note != "" %}<span class="session__note">{{ s.note }}</span>{% endif %}
-          </span>
-        </a>
+          </div>
+          <div class="session__action">
+            <a class="btn btn--primary btn--signup" href="{{ signup }}" target="_blank" rel="noopener">Sign up</a>
+          </div>
+        </div>
       </li>
       {% endfor %}
     </ul>

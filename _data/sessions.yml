@@ -12,6 +12,10 @@
 #    time  – start time, written however you like ("6:30 PM")
 #    venue.name – the shop / place name
 #    venue.url  – a link to that place (maps, website, etc.)
+#    signup_url – where players sign up for THIS session (a Discord
+#                 event, a form, etc.). This is the big "Sign up"
+#                 button. If you leave it out, the button falls back
+#                 to the Discord invite from _config.yml.
 #    note  – optional short line under the venue (leave blank
 #            with "" or delete the line to hide it)
 # =============================================================
@@ -21,14 +25,16 @@
   time: "6:15 PM"
   venue:
     name: Plenty of Games CBD
-    url: "https://maps.app.goo.gl/CHBitAcA4krtBhQCA"   # ← CHECK this link is right
-  note: "Free entry · diverse cubes · everyone welcome"
+    url: "https://maps.app.goo.gl/CHBitAcA4krtBhQCA" 
+  signup_url: "https://discordapp.com/channels/1477819996095905804/1477820156557398149"  
+  note: "Our primary event - same day & time every week"
 
-# --- Example of a second event. Uncomment and edit to use it. ---
-# - name: Sunday Powered Cube
-#   day: Sunday
-#   time: "1:00 PM"
-#   venue:
-#     name: Good Games Melbourne
-#     url: "https://example.com"
-#   note: "Higher-power cubes · BYO welcome"
+
+- name: Daytime cubing
+  day: Sporadic
+  time: "Start time varies"
+  venue:
+    name: Plenty of Games CBD
+    url: "https://maps.app.goo.gl/CHBitAcA4krtBhQCA"
+  signup_url: "https://discordapp.com/channels/1477819996095905804/1521007016435515502"
+  note: "Spontaneous mid-day cubing; check the channel for event details!"

@@ -307,30 +307,14 @@ main { flex: 1 0 auto; }
 .menu__item + .menu__item { border-top: 2px dashed rgba(255,211,77,0.28); }
 
 .session {
+  /* fixed first column so every session's details line up at the same x */
   display: grid;
-  grid-template-columns: 26px 1fr auto;
+  grid-template-columns: clamp(160px, 20vw, 220px) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 6px 16px;
-  padding: 20px clamp(16px, 3vw, 28px);
-  text-decoration: none;
+  column-gap: clamp(22px, 4vw, 44px);
+  row-gap: 16px;
+  padding: 22px clamp(16px, 3vw, 28px);
   color: var(--parchment);
-  transition: background-color 90ms;
-}
-.session:hover,
-.session:focus-visible {
-  background-color: rgba(22,74,168,0.55);
-  outline: none;
-}
-.session__cursor {
-  color: var(--gold);
-  font-size: 1rem;
-  opacity: 0.35;                 /* static indicator, brighter on hover */
-  transition: opacity 90ms, transform 90ms;
-}
-.session:hover .session__cursor,
-.session:focus-visible .session__cursor {
-  opacity: 1;
-  transform: translateX(2px);
 }
 
 .session__main { display: flex; flex-direction: column; }
@@ -347,21 +331,33 @@ main { flex: 1 0 auto; }
   margin-top: 8px;
   opacity: 0.9;
 }
-.session__meta { display: flex; flex-direction: column; text-align: right; }
+
+.session__meta { display: flex; flex-direction: column; gap: 6px; }
 .session__time {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(0.72rem, 1.8vw, 0.95rem);
   color: var(--parchment);
   text-shadow: 2px 2px 0 var(--ink);
 }
-.session__venue { font-size: 1.15rem; color: var(--gold); margin-top: 8px; }
-.session__venue .ext { font-size: 0.95rem; }
-.session__note {
-  font-size: 1rem;
-  color: var(--parchment);
-  opacity: 0.7;
-  margin-top: 4px;
+.session__venue {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  width: max-content;
+  max-width: 100%;
+  font-size: 1.15rem;
+  color: var(--gold);
+  text-decoration: none;
+  text-underline-offset: 3px;
 }
+.session__venue:hover,
+.session__venue:focus-visible { color: #fff; text-decoration: underline; outline-offset: 3px; }
+.session__venue .ext { font-size: 0.95rem; }
+.session__note { font-size: 1rem; color: var(--parchment); opacity: 0.7; }
+
+/* Sign up = the primary action of a session, pushed to the far right */
+.session__action { justify-self: end; }
+.btn--signup { font-size: clamp(0.66rem, 1.6vw, 0.78rem); padding: 15px 26px; }
 
 /* =================================================================
    PROSE (Markdown copy)
@@ -472,9 +468,10 @@ main { flex: 1 0 auto; }
   .banner__nav a { padding: 9px 9px; font-size: 0.56rem; }
 }
 
-@media (max-width: 540px) {
-  .session { grid-template-columns: 24px 1fr; gap: 4px 12px; }
-  .session__meta { grid-column: 2; text-align: left; margin-top: 10px; }
+@media (max-width: 640px) {
+  .session { grid-template-columns: 1fr; row-gap: 14px; }
+  .session__action { justify-self: stretch; }
+  .btn--signup { width: 100%; }
 }
 
 /* =================================================================

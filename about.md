@@ -12,26 +12,27 @@ description: What Cube is, how a night runs, and what to expect as a newcomer
 
 ## What's a Cube, anyway?
 
-A Cube is a hand-picked pool of Magic cards — one player's personal
-greatest-hits set, built to be drafted again and again. No two Cubes
-are alike: some chase raw power, some tell a theme, some are pure
-chaos. We open packs, pass cards, build decks on the spot, and play
-until the shop kicks us out.
+Cube is a Magic: the Gathering format where players curate a list
+of custom cards, often several hundred, which are then distributed
+into packs and drafted to emulate opening packs of a retail Magic set.
+Players then build decks and play just like a normal draft.
 
-Bring your own Cube to share, or draft one of ours. You don't need a
-collection — just a willingness to pick the sickest card in the pack.
+What makes Cube different is that players aren't constrained by 
+what is printed in a set; Cubes often contain powerful Vintage cards,
+fancy premium treatments, or are based around themes like mono-colour
+or commons-only. This lets us get creative with what the experience
+of Limited/Draft can be without it needing to sell packs.
 
 ## New here? Just turn up.
 
-No Cube, no rating, no plan required. We'll find you a seat, walk you
-through your first draft, and lend you sleeves, dice, and anything
-else you're missing. First-timers and grizzled Vintage Cube veterans
-sit at the same tables — that's the whole point.
+If you have your own Cube, we'd love you to bring it and share!
+But if you're new or don't have a Cube, that's great too! We welcome
+players of all experience levels.
 
 ## How a night runs
 
-- **Arrive & sign in.** Say hi on the [Discord]({{ site.discord_url }})
+- **Arrive & sign in.** Sign up to an event in our [Discord]({{ site.discord_url }})
   so we know to expect you.
-- **Draft.** Eight players to a pod. Open, pick, pass, repeat.
-- **Deckbuild.** Forty cards, as much or as little sweat as you like.
-- **Battle.** Best-of-three rounds, casual pace, good vibes.
+- **Draft.** We start on-time to respect the availability of our store hosts.
+- **Deckbuild.** Your friendly club admins will coordinate matches for you.
+- **Battle.** We try to keep to time to ensure everyone gets a chance to play their deck.
