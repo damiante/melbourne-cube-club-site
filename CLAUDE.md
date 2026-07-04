@@ -29,8 +29,19 @@ Non-technical edits are confined to three inputs, each commented inline:
 - `_layouts/default.html` — shared shell: `<head>`, sticky banner + nav, footer. Every page renders through it via `{{ content }}`. Nav active state = `page.url contains '/about'` etc.
 - `_layouts/page.html` (`layout: default`) — wraps a page's Markdown in the section + RPG "window"; reads front matter `title`, `eyebrow`, `badge`.
 - `index.html` (`layout: default`) — home page = hero + Sessions loop over `site.data.sessions`. It's **HTML, not Markdown** (the layout is structural); **there is no `index.md`**.
-- `about.md`, `tournament.md` (`layout: page`) — served at `/about/`, `/tournament/` (`permalink: pretty`). Tournament is a "Coming soon" placeholder for a future feature.
+- `about.md` (`layout: page`) — served at `/about/`.
+- `tournament.html` (`layout: default`) — served at `/tournament/`; the interactive Swiss tournament app (see below).
+- `default.html` supports per-page `extra_css` / `extra_js` front-matter arrays (loaded via `relative_url`), so JS ships only where needed — the tournament page is the only one with JavaScript.
 - All internal links/assets use the `| relative_url` filter so `baseurl` works.
+
+## Tournament app (`assets/js/tournament.js` + `tournament.css`)
+
+Self-contained vanilla-JS Swiss tournament manager, no framework/deps. State lives entirely in `localStorage` (`mcc_tournament_v1`) and persists across reloads until the user resets; a single `render()` rebuilds `#tournament-app` from `state.phase` (`setup` → `round` → `ended`). DOM is built with a small `h()` helper using `textContent` (names are user input — keep it that way, don't switch to innerHTML).
+- Seating: player `i` of `N` sits at `angle = i·360/N` clockwise from top, so seats always redistribute evenly.
+- Round 1 pairs opposite seats (`i` with `i+N/2`); odd counts give a **random** player the bye.
+- Setup list supports drag-to-reorder (Pointer Events, mouse + touch) and rejects duplicate names (case-insensitive).
+- Ending a tournament tallies **completed rounds only** — an unfinished current round is excluded from standings and the round count.
+- Rounds 2+ = Swiss: match points (win/bye = 3, draw = 1), MTG tiebreakers (OMW%/GW%/OGW%), rematch avoidance via `backtrackPair`, byes to the lowest-standing player with the fewest byes (no second bye until everyone has one). A bye is scored as a **2–1 win**. Game counts per match are not enforced (matches can go to time).
 
 ## Design system (`assets/css/style.css`) — non-obvious rules
 

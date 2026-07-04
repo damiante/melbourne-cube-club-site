@@ -43,8 +43,12 @@ the details. The home page adds it to the list automatically.
 
 - **Home** — hero + the Sessions list ([`index.html`](index.html)).
 - **`/about/`** — About Cube, from [`about.md`](about.md).
-- **`/tournament/`** — Run Tournament, from [`tournament.md`](tournament.md).
-  This is a "Coming soon" placeholder for a future feature.
+- **`/tournament/`** — Run Tournament ([`tournament.html`](tournament.html)): a
+  built-in **Swiss tournament** manager. Add players, seat them around a virtual
+  table, and run rounds — pairings, byes, results, and final standings are all
+  handled for you. It runs entirely in your browser (nothing is uploaded, no
+  sign-up), and the tournament survives a page refresh until you end or reset
+  it.
 
 The links in the top banner point to these. Editing the Markdown only changes
 the words — the layout, banner, and footer are handled for you.
