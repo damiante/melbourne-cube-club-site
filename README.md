@@ -58,13 +58,13 @@ the words — the layout, banner, and footer are handled for you.
 ## Publishing
 
 The site is already connected to GitHub Pages and **deploys from `main`**: push
-a commit and it goes live in about a minute at
-<https://damiantesta.com/melbourne-cube-club-site/>.
+a commit and it goes live in about a minute at <https://cubeclub.melbourne/>.
 
-Because it lives at that sub-path (`/melbourne-cube-club-site/`), the
-`baseurl:` line at the bottom of [`_config.yml`](_config.yml) must be set to
-`/melbourne-cube-club-site` so the styling, logo, and links resolve. (If you
-ever move it to its own domain or subdomain, clear `baseurl` again.)
+The custom domain is set by the `CNAME` file in the repo root (managed by
+GitHub Pages — leave it in place). Because the site lives at the domain root,
+the `baseurl:` line in [`_config.yml`](_config.yml) stays **empty** (keep it
+commented out). Only set `baseurl` if you ever move to a repo sub-path such as
+`username.github.io/melbourne-cube-club-site/`.
 
 If a deploy ever fails with *"try again later"*, that's a temporary GitHub
 hiccup, not your content — re-run the deployment (repo **Actions** tab → the

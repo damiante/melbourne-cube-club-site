@@ -55,5 +55,5 @@ Self-contained vanilla-JS Swiss tournament manager, no framework/deps. State liv
 ## Deployment / gotchas
 
 - GitHub Pages, **legacy branch deploy from `main`** — pushing to `main` auto-builds and deploys. The deploy step occasionally fails/stalls with "try again later" (GitHub-side transient), not a code problem.
-- Site is served at a **project path** (`damiantesta.com/melbourne-cube-club-site/`), so `baseurl: "/melbourne-cube-club-site"` in `_config.yml` is required for assets/links to resolve — currently commented out; set it before relying on the live deploy.
+- Site is served at the custom apex domain **`https://cubeclub.melbourne/`** (set by the `CNAME` file in the repo root, managed by Pages — don't delete it). It's a domain root, so `baseurl` in `_config.yml` stays empty (leave it commented). Internal URLs use `| relative_url` so they resolve regardless.
 - `node_modules/`, `package*.json` are local tooling only — gitignored **and** in `_config.yml` `exclude`. The branding PNGs in the repo root are also build-excluded.
