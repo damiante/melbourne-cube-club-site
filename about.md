@@ -23,7 +23,7 @@ fancy premium treatments, or are based around themes like mono-colour
 or commons-only. This lets us get creative with what the experience
 of Limited/Draft can be without it needing to sell packs.
 
-## New here? Just turn up.
+## New here? Sign up & turn up.
 
 If you have your own Cube, we'd love you to bring it and share!
 But if you're new or don't have a Cube, that's great too! We welcome
