@@ -1,0 +1,34 @@
+# =============================================================
+#  Sessions — the recurring events MCC runs.
+#
+#  Each "- name:" block is one event. We run a single weekly
+#  event today, but you can add as many as you like: copy a
+#  whole block (from "- name:" down to its "note:") and paste
+#  it below, then edit the details.
+#
+#  Fields:
+#    name  – what you call this event
+#    day   – the day it runs (e.g. Tuesday)
+#    time  – start time, written however you like ("6:30 PM")
+#    venue.name – the shop / place name
+#    venue.url  – a link to that place (maps, website, etc.)
+#    note  – optional short line under the venue (leave blank
+#            with "" or delete the line to hide it)
+# =============================================================
+
+- name: Thursday Night Cube
+  day: Thursday
+  time: "6:15 PM"
+  venue:
+    name: Plenty of Games CBD
+    url: "https://maps.app.goo.gl/CHBitAcA4krtBhQCA"   # ← CHECK this link is right
+  note: "Free entry · diverse cubes · everyone welcome"
+
+# --- Example of a second event. Uncomment and edit to use it. ---
+# - name: Sunday Powered Cube
+#   day: Sunday
+#   time: "1:00 PM"
+#   venue:
+#     name: Good Games Melbourne
+#     url: "https://example.com"
+#   note: "Higher-power cubes · BYO welcome"

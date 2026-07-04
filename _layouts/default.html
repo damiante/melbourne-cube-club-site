@@ -1,0 +1,70 @@
+<!-- Base layout: shared <head>, sticky banner, and footer for every page. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% if page.title %}
+  <title>{{ page.title }} — {{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: page.title }} — {{ site.title }}, {{ site.locale }}.">
+  {% else %}
+  <title>{{ site.title }} — {{ site.tagline }}</title>
+  <meta name="description" content="{{ site.title }}: {{ site.tagline }} A Magic: The Gathering Cube drafting community in {{ site.locale }}.">
+  {% endif %}
+
+  <link rel="icon" type="image/png" href="{{ '/assets/img/logo.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/logo.png' | relative_url }}">
+
+  <meta property="og:title" content="{{ page.title | default: site.title }}">
+  <meta property="og:description" content="{{ page.description | default: site.tagline }}">
+  <meta property="og:image" content="{{ '/assets/img/logo.png' | absolute_url }}">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body id="top">
+
+  <!-- ============ STICKY BANNER ============ -->
+  <header class="banner">
+    <a class="banner__brand" href="{{ '/' | relative_url }}">
+      <img class="banner__logo" src="{{ '/assets/img/logo.png' | relative_url }}"
+           alt="" width="44" height="44">
+      <span class="banner__name">
+        <span class="banner__name--full">{{ site.title }}</span>
+        <span class="banner__name--short">{{ site.short_name }}</span>
+      </span>
+    </a>
+
+    <nav class="banner__nav" aria-label="Primary">
+      <a href="{{ '/#sessions' | relative_url }}">Sessions</a>
+      <a href="{{ '/about/' | relative_url }}"
+         class="{% if page.url contains '/about' %}is-active{% endif %}"
+         {% if page.url contains '/about' %}aria-current="page"{% endif %}>About Cube</a>
+      <a href="{{ '/tournament/' | relative_url }}"
+         class="{% if page.url contains '/tournament' %}is-active{% endif %}"
+         {% if page.url contains '/tournament' %}aria-current="page"{% endif %}>Run Tournament</a>
+    </nav>
+
+    <a class="banner__cta" href="{{ site.discord_url }}" target="_blank" rel="noopener">
+      Join Discord
+    </a>
+  </header>
+
+  <main>
+    {{ content }}
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="pip-row" aria-hidden="true">
+      <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+      <span class="pip"></span><span class="pip"></span>
+    </div>
+    <p class="footer__name">{{ site.short_name }} — {{ site.title }}</p>
+    <p class="footer__line">{{ site.locale }} · made by players, for players</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+---
+layout: default
+---
+<!-- Home page: hero + sessions. (About and Run Tournament are their own pages.) -->
+
+<section class="hero">
+  <div class="hero__text">
+    <p class="eyebrow">{{ site.locale }} · MTG Cube drafting</p>
+    <h1 class="hero__headline molten">{{ site.tagline }}</h1>
+    <p class="hero__lead">{{ site.intro }}</p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="{{ site.discord_url }}" target="_blank" rel="noopener">Join the Discord</a>
+    </div>
+  </div>
+  <div class="hero__art" aria-hidden="true">
+    <div class="cube">
+      <span class="cube__face cube__face--top"></span>
+      <span class="cube__face cube__face--left"></span>
+      <span class="cube__face cube__face--right"></span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sessions">
+  <p class="section__eyebrow">Where we play</p>
+  <h2 class="section__title molten">Sessions</h2>
+
+  <div class="window">
+    <ul class="menu">
+      {% for s in site.data.sessions %}
+      <li class="menu__item">
+        <a class="session" href="{{ s.venue.url }}" target="_blank" rel="noopener">
+          <span class="session__cursor" aria-hidden="true">&#9654;</span>
+          <span class="session__main">
+            <span class="session__day">{{ s.day }}</span>
+            <span class="session__name">{{ s.name }}</span>
+          </span>
+          <span class="session__meta">
+            <span class="session__time">{{ s.time }}</span>
+            <span class="session__venue">{{ s.venue.name }} <span class="ext">↗</span></span>
+            {% if s.note and s.note != "" %}<span class="session__note">{{ s.note }}</span>{% endif %}
+          </span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>

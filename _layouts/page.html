@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<!-- Wraps a page's Markdown body in the standard section + RPG window.
+     Front matter: title (required), eyebrow (small label), badge (optional). -->
+<section class="section section--page">
+  {% if page.eyebrow %}<p class="section__eyebrow">{{ page.eyebrow }}</p>{% endif %}
+  <h1 class="section__title molten">{{ page.title }}</h1>
+
+  <div class="window window--prose">
+    {% if page.badge %}<p class="badge-line"><span class="badge">{{ page.badge }}</span></p>{% endif %}
+    <div class="prose">
+      {{ content }}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+# =============================================================
+#  Melbourne Cube Club — site configuration
+#  Edit the values below. After pushing to GitHub, the site
+#  rebuilds automatically (usually within a minute).
+# =============================================================
+
+# The club name and one-line tagline shown in the banner + hero.
+title: Melbourne Cube Club
+short_name: MCC
+tagline: "Bring a cube. Draft. Battle."
+
+# The short intro paragraph under the hero headline.
+intro: "Melbourne Cube Club is a weekly Magic: The Gathering meetup built around Cube — curated, singleton card pools you draft fresh every time. Bring your own or draft one of ours."
+
+# Where in the world you are (small eyebrow above the logo).
+locale: "Melbourne · Australia"
+
+# Your Discord invite. This is the big call-to-action button.
+# Create a permanent invite in Discord and paste it here.
+discord_url: "https://discord.gg/eSXmBgzhK"
+
+# --- Machinery below: you normally don't need to touch this ---
+markdown: kramdown
+permalink: pretty
+sass:
+  style: compressed
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - "MCC_Cube_Discord_poster_II.png"
+  - "MCC Logo transparent.png"
+
+# If you host this at username.github.io/REPO-NAME (a "project
+# page") rather than a custom domain, uncomment and set baseurl:
+# baseurl: "/melbourne-cube-club-site"
