@@ -4,35 +4,42 @@
 
 .trn { max-width: 720px; margin: 0 auto; }
 
-/* ---------- the virtual table ---------- */
+/* ---------- the rectangular table (players facing across) ---------- */
 .trn__arena {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  margin: 8px auto 40px;
-  aspect-ratio: 1 / 1;
+  --seatw: clamp(66px, 15vw, 88px);
+  margin: 6px 0 34px;
+  overflow-x: auto;            /* scroll sideways if a lot of players */
+  padding-bottom: 6px;
 }
+.trn__seatinglabel {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.56rem; letter-spacing: 0.1em;
+  color: var(--gold); text-shadow: 2px 2px 0 var(--ink);
+  opacity: 0.85; margin: 0 0 14px;
+}
+.trn__stage { width: fit-content; min-width: 100%; margin: 0 auto; }
+.trn__side { display: grid; justify-content: center; gap: 10px; }
+.trn__side--top { align-items: end; }
+.trn__side--bottom { align-items: start; }
 .trn__table {
-  position: absolute;
-  left: 16%; top: 16%; width: 68%; height: 68%;
-  border-radius: 34% / 42%;
-  background-image: linear-gradient(180deg, rgba(12,42,110,0.9), rgba(6,20,58,0.94));
   border: 3px solid var(--ink);
+  border-radius: 4px;
+  background-image: linear-gradient(180deg, rgba(12,42,110,0.9), rgba(6,20,58,0.94));
   box-shadow: 0 0 0 3px var(--gold), inset 0 0 0 2px rgba(255,211,77,0.2);
+  min-height: 76px;
+  margin: 10px 0;
   display: flex; align-items: center; justify-content: center;
 }
 .trn__table-label {
   font-family: "Press Start 2P", monospace;
-  font-size: 0.6rem; line-height: 1.6;
-  color: var(--parchment); opacity: 0.6;
-  letter-spacing: 0.05em; text-align: center; padding: 12px;
+  font-size: 0.6rem; color: var(--parchment); opacity: 0.55;
+  letter-spacing: 0.06em; text-align: center; padding: 12px;
 }
 .trn__seat {
-  position: absolute;
-  transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; gap: 3px;
-  width: 82px;
+  width: var(--seatw);
 }
+.trn__seat--empty { visibility: hidden; }
 .trn__seat-num {
   width: 22px; height: 22px;
   display: flex; align-items: center; justify-content: center;
@@ -41,8 +48,9 @@
   background-image: linear-gradient(180deg, var(--gold), var(--orange));
   border: 2px solid var(--ink);
 }
+.trn__side--bottom .trn__seat { flex-direction: column-reverse; }
 .trn__seat-name {
-  max-width: 82px;
+  max-width: var(--seatw);
   font-size: 1rem; line-height: 1.15;
   color: var(--parchment); text-align: center;
   background: rgba(6,20,58,0.88);
@@ -125,6 +133,11 @@
 .trn__actions > .btn { width: 100%; }
 .trn__actions--sub { margin-top: 14px; }
 .trn__actions--sub > .btn { width: auto; display: block; margin: 0 auto; }
+/* Back (¼, muted) inline with the prominent Start-next-round (¾) */
+.trn__actions--row { display: flex; gap: 12px; margin-top: 10px; }
+.trn__actions--row > .btn { width: auto; }
+.trn__back { flex: 1 1 0; }
+.trn__next { flex: 3 1 0; }
 
 /* ---------- rounds & matches ---------- */
 .trn__round-head { font-size: clamp(1.2rem, 3.2vw, 1.8rem); margin: 0 0 22px; }
@@ -200,7 +213,29 @@
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
-.trn__modal { width: 100%; max-width: 420px; padding: clamp(22px, 4vw, 32px); }
+.trn__modal { width: 100%; max-width: 420px; padding: clamp(22px, 4vw, 32px); max-height: calc(100svh - 40px); overflow-y: auto; }
+
+/* drop-players controls inside the next-round dialog */
+.trn__droplabel { font-size: 1.1rem; color: var(--parchment); opacity: 0.8; margin: 20px 0 10px; line-height: 1.35; }
+.trn__dropchips { display: flex; flex-wrap: wrap; gap: 8px; }
+.trn__dropchip {
+  font-family: "VT323", monospace; font-size: 1.15rem;
+  color: var(--parchment);
+  background: rgba(8,26,72,0.6);
+  border: 2px solid rgba(255,211,77,0.3);
+  padding: 6px 12px; cursor: pointer;
+  transition: color 90ms, border-color 90ms, background-color 90ms;
+}
+.trn__dropchip:hover, .trn__dropchip:focus-visible { border-color: var(--gold); outline: none; }
+.trn__dropchip.is-dropping { color: var(--red); border-color: var(--red); background: rgba(228,35,15,0.14); text-decoration: line-through; }
+.trn__drophint { color: var(--red); font-size: 1rem; margin: 10px 0 0; min-height: 1.1em; text-shadow: 1px 1px 0 var(--ink); }
+.trn__stag {
+  font-family: "Press Start 2P", monospace; font-size: 0.45rem;
+  color: var(--parchment); background: rgba(228,35,15,0.85);
+  border: 2px solid var(--ink);
+  padding: 3px 5px; margin-left: 8px;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
 .trn__mbody { display: block; }
 .trn__mtitle {
   font-family: "Press Start 2P", monospace; font-size: 0.85rem;
@@ -227,6 +262,6 @@
 .trn__mactions > .btn { flex: 1 1 auto; }
 
 @media (max-width: 460px) {
-  .trn__seat { width: 66px; }
-  .trn__seat-name { max-width: 66px; font-size: 0.9rem; }
+  .trn__arena { --seatw: 62px; }
+  .trn__seat-name { font-size: 0.9rem; }
 }

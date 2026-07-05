@@ -56,6 +56,11 @@
     var n = name.trim().toLowerCase();
     return state.players.some(function (p) { return p.name.trim().toLowerCase() === n; });
   }
+  function playerById(pid) {
+    for (var i = 0; i < state.players.length; i++) if (state.players[i].id === pid) return state.players[i];
+    return null;
+  }
+  function isDropped(pid) { var p = playerById(pid); return !!(p && p.dropped); }
 
   // Pointer-based drag-to-reorder. Works for mouse + touch: on pointerdown on a
   // handle we track moves at the document level (robust vs pointer capture) and
@@ -112,9 +117,27 @@
   }
 
   /* -------------------------------------------------- round 1: seat opposites */
+  // Players sit in facing columns: entry i -> column floor(i/2), row top if
+  // i is even, bottom if odd. The draft passes around the table's perimeter
+  // (top row left->right, then bottom row right->left).
+  function seatColumns() {
+    var N = state.players.length, cols = Math.ceil(N / 2), top = [], bottom = [];
+    for (var c = 0; c < cols; c++) {
+      top.push(state.players[2 * c] || null);
+      bottom.push((2 * c + 1 < N) ? state.players[2 * c + 1] : null);
+    }
+    return { cols: cols, top: top, bottom: bottom };
+  }
+  function perimeterOrder() {
+    var sc = seatColumns(), loop = [];
+    sc.top.forEach(function (p) { if (p) loop.push(p.id); });                 // top L->R
+    for (var c = sc.cols - 1; c >= 0; c--) if (sc.bottom[c]) loop.push(sc.bottom[c].id); // bottom R->L
+    return loop;
+  }
   function generateRound1() {
-    var seats = state.players.map(function (p) { return p.id; });
-    var pool = seats.slice();
+    // Fold the draft's seating loop so people play whoever sat opposite them
+    // in the draft (the diagonal across the table), NOT the person beside them.
+    var pool = perimeterOrder();
     var byeId = null;
     if (pool.length % 2 === 1) byeId = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]; // odd: a random player sits out
     var half = pool.length / 2;
@@ -191,7 +214,8 @@
 
   /* -------------------------------------------------- Swiss pairing (round 2+) */
   function generateSwissRound() {
-    var ranked = ranking(computeStats());
+    // dropped players stay in the standings but are not paired again
+    var ranked = ranking(computeStats()).filter(function (s) { return !isDropped(s.id); });
     var pool = ranked.map(function (s) { return s.id; });
     var matches = [];
     if (pool.length % 2 === 1) {
@@ -228,10 +252,29 @@
     return res;
   }
 
-  function startNextRound() {
+  function startNextRound(dropIds) {
+    dropIds = dropIds || [];
+    dropIds.forEach(function (pid) { var p = playerById(pid); if (p) p.dropped = true; });
     var matches = generateSwissRound();
-    state.rounds.push({ number: state.currentRound + 1, matches: matches });
+    // remember who dropped on entry so "Back" can restore them
+    state.rounds.push({ number: state.currentRound + 1, matches: matches, dropped: dropIds });
     state.currentRound += 1;
+    save(); render();
+  }
+
+  function goBack() {
+    if (state.currentRound > 1) {
+      var removed = state.rounds.pop();
+      ((removed && removed.dropped) || []).forEach(function (pid) {
+        var p = playerById(pid); if (p) delete p.dropped;
+      });
+      state.currentRound -= 1;
+    } else {
+      state.rounds = [];
+      state.currentRound = 0;
+      state.phase = 'setup';
+      state.players.forEach(function (p) { delete p.dropped; });
+    }
     save(); render();
   }
 
@@ -318,8 +361,6 @@
 
   /* -------------------------------------------------- render: setup */
   function renderSetup() {
-    root.appendChild(renderTable());
-
     var list = h('div', { class: 'trn__players' });
     list.appendChild(h('h2', { class: 'trn__subhead', text: 'Players (' + state.players.length + ')' }));
 
@@ -356,28 +397,46 @@
     list.appendChild(err);
     root.appendChild(list);
 
+    root.appendChild(renderTable());
+
     root.appendChild(h('div', { class: 'trn__actions' }, [
       h('button', { class: 'btn btn--primary', disabled: state.players.length < 2,
         onclick: startTournament }, ['Start tournament!'])
     ]));
   }
 
+  function seatEl(p) {
+    if (!p) return h('div', { class: 'trn__seat trn__seat--empty' });
+    var i = state.players.indexOf(p);
+    return h('div', { class: 'trn__seat' }, [
+      h('span', { class: 'trn__seat-num', text: String(i + 1) }),
+      h('span', { class: 'trn__seat-name', title: p.name, text: p.name })
+    ]);
+  }
   function renderTable() {
-    var arena = h('div', { class: 'trn__arena' });
     var N = state.players.length;
-    arena.appendChild(h('div', { class: 'trn__table' }, [
-      h('span', { class: 'trn__table-label', text: N ? N + (N === 1 ? ' player' : ' players') : 'Add players to seat them' })
-    ]));
-    state.players.forEach(function (p, i) {
-      var ang = i * 2 * Math.PI / N;         // clockwise from top
-      var left = 50 + 40 * Math.sin(ang);
-      var top = 50 - 40 * Math.cos(ang);
-      arena.appendChild(h('div', { class: 'trn__seat', style: 'left:' + left + '%;top:' + top + '%;' }, [
-        h('span', { class: 'trn__seat-num', text: String(i + 1) }),
-        h('span', { class: 'trn__seat-name', title: p.name, text: p.name })
-      ]));
-    });
-    return arena;
+    var sc = seatColumns();
+    var cols = Math.max(sc.cols, 1);
+    var tracks = 'repeat(' + cols + ', var(--seatw))';
+
+    var top = h('div', { class: 'trn__side trn__side--top' });
+    top.style.gridTemplateColumns = tracks;
+    sc.top.forEach(function (p) { top.appendChild(seatEl(p)); });
+
+    var bottom = h('div', { class: 'trn__side trn__side--bottom' });
+    bottom.style.gridTemplateColumns = tracks;
+    sc.bottom.forEach(function (p) { bottom.appendChild(seatEl(p)); });
+
+    var table = h('div', { class: 'trn__table' }, [
+      h('span', { class: 'trn__table-label',
+        text: N ? N + (N === 1 ? ' player' : ' players') : 'Add players to seat them' })
+    ]);
+
+    var stage = h('div', { class: 'trn__stage' }, [top, table, bottom]);
+    return h('div', { class: 'trn__arena' }, [
+      h('p', { class: 'trn__seatinglabel', text: 'Table seating' }),
+      stage
+    ]);
   }
 
   /* -------------------------------------------------- render: round */
@@ -389,11 +448,20 @@
     rd.matches.forEach(function (m) { wrap.appendChild(renderMatch(m)); });
     root.appendChild(wrap);
 
+    root.appendChild(h('div', { class: 'trn__actions trn__actions--row' }, [
+      h('button', { class: 'btn btn--ghost trn__back', onclick: function () {
+        var toPrev = state.currentRound > 1;
+        var msg = toPrev
+          ? 'Go back to round ' + (state.currentRound - 1) + '? This round’s pairings and results will be discarded.'
+          : 'Go back to player setup? This round’s pairings will be discarded — your players are kept.';
+        confirmDialog(msg, toPrev ? 'Go back' : 'Back to setup', goBack);
+      } }, ['◂ Back']),
+      h('button', { class: 'btn btn--primary trn__next', disabled: !allRecorded(rd),
+        onclick: openNextRoundDialog }, ['Start next round'])
+    ]));
+
     root.appendChild(h('div', { class: 'trn__actions' }, [
-      h('button', { class: 'btn btn--primary', disabled: !allRecorded(rd), onclick: function () {
-        confirmDialog('Start the next round? This locks in the current results and generates fresh Swiss pairings.',
-          'Start next round', startNextRound);
-      } }, ['Start next round'])
+      h('button', { class: 'btn btn--ghost', onclick: openResults }, ['View current results'])
     ]));
 
     if (completedRounds() >= 1) {
@@ -445,19 +513,20 @@
     ]);
   }
 
-  /* -------------------------------------------------- render: ended */
-  function renderEnded() {
-    var ranked = ranking(computeStats());
+  /* -------------------------------------------------- standings (shared) */
+  function standingsLegend() {
     var played = completedRounds();
-    root.appendChild(h('h1', { class: 'trn__round-head molten', text: 'Final standings' }));
-    root.appendChild(h('p', { class: 'trn__legend',
-      text: played + (played === 1 ? ' round' : ' rounds') + ' played · pts · match W–D–L · OMW% tiebreak' }));
-
+    return h('p', { class: 'trn__legend',
+      text: played + (played === 1 ? ' round' : ' rounds') + ' played · pts · match W–D–L · OMW% tiebreak' });
+  }
+  function standingsBoard() {
     var board = h('div', { class: 'window trn__standings' });
-    ranked.forEach(function (s, i) {
+    ranking(computeStats()).forEach(function (s, i) {
+      var name = h('span', { class: 'trn__sname' }, [s.name]);
+      if (isDropped(s.id)) name.appendChild(h('span', { class: 'trn__stag', text: 'dropped' }));
       board.appendChild(h('div', { class: 'trn__srow' + (i === 0 ? ' trn__srow--first' : '') }, [
         h('span', { class: 'trn__splace', text: '#' + (i + 1) }),
-        h('span', { class: 'trn__sname', text: s.name }),
+        name,
         h('div', { class: 'trn__smeta' }, [
           h('span', { class: 'trn__spts', text: s.mp + ' pts' }),
           h('span', { class: 'trn__srec', text: s.mw + '–' + s.md + '–' + s.ml }),
@@ -465,7 +534,61 @@
         ])
       ]));
     });
-    root.appendChild(board);
+    return board;
+  }
+
+  // "View current results" — standings as if ended, without ending
+  function openResults() {
+    openModal(h('div', { class: 'trn__mbody' }, [
+      h('h3', { class: 'trn__mtitle', text: 'Current standings' }),
+      standingsLegend(),
+      standingsBoard(),
+      h('div', { class: 'trn__mactions' }, [
+        h('button', { class: 'btn btn--primary', onclick: closeModal }, ['Close'])
+      ])
+    ]));
+  }
+
+  // "Start next round" dialog, with an option to drop players first
+  function openNextRoundDialog() {
+    var selected = {};
+    var active = state.players.filter(function (p) { return !p.dropped; });
+    var hint = h('p', { class: 'trn__drophint' });
+    var startBtn = h('button', { class: 'btn btn--primary', onclick: function () {
+      closeModal(); startNextRound(Object.keys(selected));
+    } }, ['Start next round']);
+    function refresh() {
+      var remaining = active.length - Object.keys(selected).length;
+      startBtn.disabled = remaining < 2;
+      hint.textContent = remaining < 2 ? 'Keep at least 2 players in to start a round.' : '';
+    }
+    var chips = active.map(function (p) {
+      var chip = h('button', { class: 'trn__dropchip', type: 'button', onclick: function () {
+        if (selected[p.id]) { delete selected[p.id]; chip.classList.remove('is-dropping'); }
+        else { selected[p.id] = true; chip.classList.add('is-dropping'); }
+        refresh();
+      }, text: p.name });
+      return chip;
+    });
+    refresh();
+    openModal(h('div', { class: 'trn__mbody' }, [
+      h('h3', { class: 'trn__mtitle', text: 'Start next round' }),
+      h('p', { class: 'trn__confirm', text: 'Locks in the current results and generates fresh Swiss pairings.' }),
+      h('p', { class: 'trn__droplabel', text: 'Someone drop out? Tap to remove them from here on — they still count in the final standings.' }),
+      h('div', { class: 'trn__dropchips' }, chips),
+      hint,
+      h('div', { class: 'trn__mactions' }, [
+        startBtn,
+        h('button', { class: 'btn btn--ghost', onclick: closeModal }, ['Cancel'])
+      ])
+    ]));
+  }
+
+  /* -------------------------------------------------- render: ended */
+  function renderEnded() {
+    root.appendChild(h('h1', { class: 'trn__round-head molten', text: 'Final standings' }));
+    root.appendChild(standingsLegend());
+    root.appendChild(standingsBoard());
 
     root.appendChild(h('div', { class: 'trn__actions' }, [
       h('button', { class: 'btn btn--ghost', onclick: function () {

@@ -37,8 +37,8 @@ Non-technical edits are confined to three inputs, each commented inline:
 ## Tournament app (`assets/js/tournament.js` + `tournament.css`)
 
 Self-contained vanilla-JS Swiss tournament manager, no framework/deps. State lives entirely in `localStorage` (`mcc_tournament_v1`) and persists across reloads until the user resets; a single `render()` rebuilds `#tournament-app` from `state.phase` (`setup` → `round` → `ended`). DOM is built with a small `h()` helper using `textContent` (names are user input — keep it that way, don't switch to innerHTML).
-- Seating: player `i` of `N` sits at `angle = i·360/N` clockwise from top, so seats always redistribute evenly.
-- Round 1 pairs opposite seats (`i` with `i+N/2`); odd counts give a **random** player the bye.
+- Seating: rectangular table drawn as facing columns — entry `i` sits at column `⌊i/2⌋`, top row if `i` is even else bottom (so players enter in facing pairs; an odd extra goes on top). Setup order is player list → table → Start button.
+- Round 1 folds the draft's **perimeter order** (`perimeterOrder()`: top row L→R, then bottom row R→L) so each player faces whoever sat opposite them in the draft — the diagonal across the table, not their across-the-table neighbour. Even pods yield all-diagonal pairings; the middle column of an odd-column layout (6, 10 players) is genuinely both facing and opposite. Odd counts give a **random** player the bye.
 - Setup list supports drag-to-reorder (Pointer Events, mouse + touch) and rejects duplicate names (case-insensitive).
 - Ending a tournament tallies **completed rounds only** — an unfinished current round is excluded from standings and the round count.
 - Rounds 2+ = Swiss: match points (win/bye = 3, draw = 1), MTG tiebreakers (OMW%/GW%/OGW%), rematch avoidance via `backtrackPair`, byes to the lowest-standing player with the fewest byes (no second bye until everyone has one). A bye is scored as a **2–1 win**. Game counts per match are not enforced (matches can go to time).
