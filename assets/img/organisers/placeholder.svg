@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Organiser photo placeholder">
+  <rect width="100" height="100" fill="#0b2f7a"/>
+  <rect width="100" height="100" fill="#164aa8" opacity="0.35"/>
+  <circle cx="50" cy="39" r="17" fill="#fbe9c8" opacity="0.9"/>
+  <path d="M20 88c0-17 13-28 30-28s30 11 30 28z" fill="#fbe9c8" opacity="0.9"/>
+</svg>

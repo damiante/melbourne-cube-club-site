@@ -12,6 +12,7 @@ automatically** whenever you push — you just edit a few plain-text files.
 | --- | --- |
 | Club name, tagline, hero intro, and the **Discord link** | [`_config.yml`](_config.yml) |
 | Sessions — day, time, venue, and the **Sign up** link (and add more events) | [`_data/sessions.yml`](_data/sessions.yml) |
+| Organisers — name, photo, Discord handle, and bio (add/remove people) | [`_data/organisers.yml`](_data/organisers.yml) |
 | The **About Cube** page text | [`about.md`](about.md) |
 | The **Run Tournament** page text | [`tournament.md`](tournament.md) |
 
@@ -39,10 +40,36 @@ the details. The home page adds it to the list automatically.
 
 ---
 
+## Organisers (the "Meet your Organisers" page)
+
+Each person in [`_data/organisers.yml`](_data/organisers.yml) becomes a card with
+their photo, name, Discord handle, and a short bio.
+
+**Adding a photo:** drop the image file into
+[`assets/img/organisers/`](assets/img/organisers/) and point the `photo:` field
+at it (e.g. `/assets/img/organisers/alex.jpg`). Photos are served through GitHub
+Pages' CDN — **not** hotlinked from the raw repo — so they load fast and don't
+hit GitHub's rate limit. Every photo is shown at the **same square size** and
+cropped to fit, so they look uniform even if your originals differ slightly; a
+roughly square image (~400×400px or bigger) works best. Leave `photo:` blank
+(`""`) and a placeholder silhouette shows instead.
+
+**Linking a Discord profile:** fill in `discord_id` with the person's numeric
+Discord user ID and their handle becomes a link to their profile. Leave it blank
+and the handle just shows as plain text. To get an ID: turn on Discord's
+Developer Mode (Settings ▸ Advanced), then right-click a user ▸ **Copy User ID**.
+
+**Add another organiser:** copy a whole `- name:` block, paste it below, and edit
+the details.
+
+---
+
 ## Pages
 
 - **Home** — hero + the Sessions list ([`index.html`](index.html)).
 - **`/about/`** — About Cube, from [`about.md`](about.md).
+- **`/organisers/`** — Meet your Organisers ([`organisers.html`](organisers.html)),
+  from [`_data/organisers.yml`](_data/organisers.yml).
 - **`/tournament/`** — Run Tournament ([`tournament.html`](tournament.html)): a
   built-in **Swiss tournament** manager. Add players, seat them around a virtual
   table, and run rounds — pairings, byes, results, and final standings are all

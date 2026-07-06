@@ -1,0 +1,45 @@
+---
+layout: default
+title: Meet your Organisers
+permalink: /organisers/
+description: The people who run Melbourne Cube Club nights
+---
+<!-- Organisers page: loops over _data/organisers.yml. Add/edit people
+     there, not here. Photos are served from assets/ (GitHub Pages CDN),
+     not hotlinked from the raw repo, and cropped to a fixed square. -->
+<section class="section section--page">
+  <p class="section__eyebrow">The crew</p>
+  <h1 class="section__title molten">Meet your Organisers</h1>
+
+  <div class="window">
+    <ul class="crew">
+      {% for o in site.data.organisers %}
+      {% assign photo = o.photo | default: '/assets/img/organisers/placeholder.svg' %}
+      {% if photo == "" %}{% assign photo = '/assets/img/organisers/placeholder.svg' %}{% endif %}
+      <li class="crew__item">
+        <article class="organiser">
+          <img class="organiser__photo" src="{{ photo | relative_url }}"
+               alt="{{ o.name }}" width="132" height="132" loading="lazy" decoding="async">
+          <div class="organiser__body">
+            <h2 class="organiser__name">{{ o.name }}</h2>
+            {% if o.discord and o.discord != "" %}
+            <p class="organiser__discord">
+              {% if o.discord_id and o.discord_id != "" %}
+              <a href="discord://https://discord.com/users/{{ o.discord_id }}">
+                <span class="organiser__tag">Discord</span>{{ o.discord }}
+              </a>
+              {% else %}
+              <span class="organiser__handle">
+                <span class="organiser__tag">Discord</span>{{ o.discord }}
+              </span>
+              {% endif %}
+            </p>
+            {% endif %}
+            <div class="organiser__bio">{{ o.bio | markdownify }}</div>
+          </div>
+        </article>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>

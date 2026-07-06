@@ -41,10 +41,15 @@
     </a>
 
     <nav class="banner__nav" aria-label="Primary">
-      <a href="{{ '/#sessions' | relative_url }}">Sessions</a>
+      <a href="{{ '/' | relative_url }}"
+         class="{% if page.url == '/' %}is-active{% endif %}"
+         {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
       <a href="{{ '/about/' | relative_url }}"
          class="{% if page.url contains '/about' %}is-active{% endif %}"
          {% if page.url contains '/about' %}aria-current="page"{% endif %}>About Cube</a>
+      <a href="{{ '/organisers/' | relative_url }}"
+         class="{% if page.url contains '/organisers' %}is-active{% endif %}"
+         {% if page.url contains '/organisers' %}aria-current="page"{% endif %}>Organisers</a>
       <a href="{{ '/tournament/' | relative_url }}"
          class="{% if page.url contains '/tournament' %}is-active{% endif %}"
          {% if page.url contains '/tournament' %}aria-current="page"{% endif %}>Run Tournament</a>

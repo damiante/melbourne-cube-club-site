@@ -1,0 +1,48 @@
+# =============================================================
+#  Organisers — the people who run MCC nights.
+#
+#  Each "- name:" block is one organiser and becomes a card on
+#  the "Meet your Organisers" page. Copy a whole block (from
+#  "- name:" down to its "bio:") and paste it below to add more.
+#
+#  Fields:
+#    name    – the organiser's name (or nickname)
+#    photo   – path to their photo IN THIS REPO, e.g.
+#              /assets/img/organisers/alex.jpg
+#              Drop the image file into assets/img/organisers/ and
+#              point to it here. Leave blank ("") to show a generic
+#              placeholder silhouette instead.
+#              ► Photos are shown at a fixed square size and cropped
+#                to fit (centred), so they all look uniform even if
+#                your source images differ a little. For best results
+#                use a roughly square image, ~400x400px or larger.
+#    discord    – their Discord handle, shown as a tag (e.g. "@name").
+#                 Leave blank ("") to hide the tag entirely.
+#    discord_id – their numeric Discord user ID. When set, the handle
+#                 links straight to their profile
+#                 (https://discord.com/users/<id>). Leave blank ("")
+#                 and the handle just shows as plain text (no link).
+#                 To get an ID: turn on Discord's Developer Mode
+#                 (Settings ▸ Advanced), then right-click a user ▸
+#                 "Copy User ID".
+#    bio        – a short blurb. Plain text; you can also use **bold**
+#                 or a [link](https://...) if you like.
+# =============================================================
+
+- name: "Anthony (Anth)"
+  photo: "assets/img/organisers/anth.jpg"
+  discord: "@burymeinmsg"
+  discord_id: "143220271778627584"
+  bio: "Our Glorious Dear Leader, MSG addict, and notorious enjoyer of birds wearing pants."
+
+- name: "Damian"
+  photo: "assets/img/organisers/damian.jpg"
+  discord: "@damian.te"
+  discord_id: "431015440181886978"
+  bio: "Voted 'least likely to attend' in our yearbook 3 years running."
+
+- name: "Carlin"
+  photo: "assets/img/organisers/carlin-safari.jpg"
+  discord: "@zowno"
+  discord_id: "531415057800888320"
+  bio: "Currently on safari hunting for rare and exotic Cubes and cards to bring back to the Australian colony"

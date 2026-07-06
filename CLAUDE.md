@@ -19,9 +19,10 @@ Visual QA: Python **Playwright** + Chromium are installed. Serve `_site/` (`pyth
 
 ## Content model (the point of the structure)
 
-Non-technical edits are confined to three inputs, each commented inline:
+Non-technical edits are confined to a few inputs, each commented inline:
 - **`_config.yml`** — `title`, `tagline`, hero `intro`, `discord_url`, `locale`.
 - **`_data/sessions.yml`** — a YAML *list* of events; each has `name`, `day`, `time`, `venue.{name,url}`, `signup_url`, `note`. Rendered by the Sessions list on the home page. **`signup_url` empty → the Sign up button falls back to `site.discord_url`** (Liquid `default` + empty-string guard in `index.html`).
+- **`_data/organisers.yml`** — a YAML *list* of organisers; each has `name`, `photo`, `discord`, `discord_id`, `bio`. Rendered by `organisers.html` (`/organisers/`). **`photo` empty → falls back to `/assets/img/organisers/placeholder.svg`** (same `default` + empty-string guard). The `discord` handle links to `discord://https://discord.com/users/<discord_id>` (the `discord://` prefix is required for the app to deep-link correctly) **only when `discord_id` is set**; otherwise it renders as plain text (never a server-invite fallback). `bio` is run through `markdownify`.
 - **`about.md` / `tournament.md`** — page prose (Markdown body under front matter).
 
 ## Rendering / layout chain
@@ -30,6 +31,7 @@ Non-technical edits are confined to three inputs, each commented inline:
 - `_layouts/page.html` (`layout: default`) — wraps a page's Markdown in the section + RPG "window"; reads front matter `title`, `eyebrow`, `badge`.
 - `index.html` (`layout: default`) — home page = hero + Sessions loop over `site.data.sessions`. It's **HTML, not Markdown** (the layout is structural); **there is no `index.md`**.
 - `about.md` (`layout: page`) — served at `/about/`.
+- `organisers.html` (`layout: default`) — served at `/organisers/`; loops `site.data.organisers` into photo-left cards inside a `.window` (same section/window framing as About, but HTML so it can loop). Photos are served from `assets/img/organisers/` via `| relative_url` (Pages/Fastly **CDN**, cached) — **not** hotlinked from `raw.githubusercontent.com`, whose aggressive rate-limiter is the reason. `.organiser__photo` is a fixed square with `object-fit: cover` so mixed source sizes present uniformly.
 - `tournament.html` (`layout: default`) — served at `/tournament/`; the interactive Swiss tournament app (see below).
 - `default.html` supports per-page `extra_css` / `extra_js` front-matter arrays (loaded via `relative_url`), so JS ships only where needed — the tournament page is the only one with JavaScript.
 - All internal links/assets use the `| relative_url` filter so `baseurl` works.
