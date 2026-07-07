@@ -512,7 +512,10 @@ main { flex: 1 0 auto; }
   }
   .hero__headline, .hero__lead { max-width: 100%; }
   .hero__lead { margin-inline: auto; }
-  .hero__art { order: -1; }         /* cube above the text on mobile */
+  /* cube above the text on mobile; the 3D-rotated cube overflows its
+     layout box, so add vertical breathing room to clear the text */
+  .hero__art { order: -1; margin: clamp(16px, 5vw, 30px) 0 clamp(30px, 8vw, 50px); }
+  .hero__actions { justify-content: center; }   /* centre the Discord button */
   .cube { --s: clamp(110px, 34vw, 160px); }
 }
 
