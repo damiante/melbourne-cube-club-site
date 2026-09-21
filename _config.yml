@@ -16,8 +16,7 @@ intro: "Melbourne Cube Club is a weekly Magic: The Gathering meetup built around
 locale: "Melbourne · Australia"
 
 # Your Discord invite. This is the big call-to-action button.
-# Create a permanent invite in Discord and paste it here.
-discord_url: "https://discord.gg/eSXmBgzhK"
+discord_url: "https://discord.gg/MvRUmxrR7X"
 
 # --- Machinery below: you normally don't need to touch this ---
 markdown: kramdown
